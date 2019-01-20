@@ -7,11 +7,33 @@ from test_framework.test_utils import enable_executor_hook
 
 RED, WHITE, BLUE = range(3)
 
-
 def dutch_flag_partition(pivot_index: int, A: List[int]) -> None:
-    # TODO - you fill in here.
-    return
 
+    next_lesser = 0
+    next_greater = len(A) - 1
+    pivot_value = A[pivot_index]
+
+    i = 0
+
+    while i <= next_greater:
+
+        if A[i] < pivot_value and i != next_lesser:
+
+            A[i], A[next_lesser] = A[next_lesser], A[i]
+
+            next_lesser += 1
+
+        elif A[i] > pivot_value and i != next_greater:
+
+            A[i], A[next_greater] = A[next_greater], A[i]
+
+            next_greater -= 1
+
+        else:
+
+            i+= 1
+
+    return A
 
 @enable_executor_hook
 def dutch_flag_partition_wrapper(executor, A, pivot_idx):
