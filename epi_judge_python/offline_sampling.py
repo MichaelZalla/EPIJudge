@@ -1,5 +1,6 @@
 import functools
 from typing import List
+import random
 
 from test_framework import generic_test
 from test_framework.random_sequence_checker import (
@@ -7,11 +8,15 @@ from test_framework.random_sequence_checker import (
     compute_combination_idx, run_func_with_retries)
 from test_framework.test_utils import enable_executor_hook
 
+def random_sampling(k: int, A: List[float]) -> float:
 
-def random_sampling(k: int, A: List[int]) -> None:
-    # TODO - you fill in here.
-    return
+    for i in range(k):
 
+        # Pick a random element in A[i+1:last] to swap A[i] with
+
+        rand_index = random.randint(i, len(A) - 1)
+
+        A[i], A[rand_index] = A[rand_index], A[i]
 
 @enable_executor_hook
 def random_sampling_wrapper(executor, k, A):
