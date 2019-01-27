@@ -36,3 +36,8 @@ epi_judge_java/java_build/
 
 # Webpage tracker
 problem_mapping.js
+
+# Editor files
+
+.vscode
+.vscode/.ropeproject
