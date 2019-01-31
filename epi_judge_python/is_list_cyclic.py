@@ -6,9 +6,44 @@ from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
+def get_cycle_length(cycle_end):
+
+    start, steps = cycle_end, 0
+
+    while True:
+
+        start = start.next
+        steps += 1
+
+        if start is cycle_end:
+            return steps
+
+def get_cycle_start(L, cycle_length):
+
+    behind = ahead = L
+
+    for _ in range(cycle_length):
+        ahead = ahead.next
+
+    while behind is not ahead:
+        behind, ahead = behind.next, ahead.next
+
+    return behind
 
 def has_cycle(head: ListNode) -> Optional[ListNode]:
-    # TODO - you fill in here.
+
+    fast = slow = L
+
+    while fast and fast.next and fast.next.next:
+
+        slow, fast = slow.next, fast.next.next
+
+        if slow is fast:
+
+            cycle_length = get_cycle_length(slow)
+
+            return get_cycle_start(L, cycle_length)
+
     return None
 
 
