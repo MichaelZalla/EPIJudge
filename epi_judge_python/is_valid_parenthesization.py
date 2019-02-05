@@ -1,9 +1,24 @@
 from test_framework import generic_test
 
+TAGS = {
+    '(': ')',
+    '{': '}',
+    '[': ']',
+}
 
-def is_well_formed(s: str) -> bool:
-    # TODO - you fill in here.
-    return True
+def is_well_formed(S: str) -> bool:
+
+    opening = []
+
+    for token in S:
+
+        if token in TAGS:
+            opening.append(token)
+        elif not opening or token != TAGS[opening.pop()]:
+            return False
+
+    return not opening
+
 
 
 if __name__ == '__main__':
