@@ -38,6 +38,8 @@ epi_judge_java/java_build/
 problem_mapping.js
 
 # Editor files
-
 .vscode
 .vscode/.ropeproject
+
+# MacOS Finder
+.DS_Store
