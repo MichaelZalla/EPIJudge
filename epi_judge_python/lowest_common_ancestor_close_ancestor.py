@@ -8,10 +8,26 @@ from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
 
-def lca(node0: BinaryTreeNode,
-        node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
-    # TODO - you fill in here.
-    return None
+def lca(L: BinaryTreeNode,
+        R: BinaryTreeNode) -> Optional[BinaryTreeNode]:
+
+    visited = {}
+
+    while L or R:
+
+        if L:
+            if L in visited:
+                return L
+            visited[L] = True
+            L = L.parent
+
+        if R:
+            if R in visited:
+                return R
+            visited[R] = True
+            R = R.parent
+
+    raise ValueError('L and R are not in the same subtree.')
 
 
 @enable_executor_hook
