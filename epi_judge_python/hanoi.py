@@ -8,9 +8,42 @@ from test_framework.test_utils import enable_executor_hook
 NUM_PEGS = 3
 
 
-def compute_tower_hanoi(num_rings: int) -> List[List[int]]:
-    # TODO - you fill in here.
-    return []
+def compute_tower_hanoi_recursive(k: int) -> List[List[int]]:
+
+    def compute_tower_hanoi_helper(k, from_peg, to_peg, spare_peg):
+
+        if k > 0:
+
+            return \
+                compute_tower_hanoi_helper(k - 1, from_peg, spare_peg, to_peg) + \
+                [(from_peg, to_peg)] + \
+                compute_tower_hanoi_helper(k - 1, spare_peg, to_peg, from_peg)
+
+        return []
+
+    return compute_tower_hanoi_helper(k, 0, 1, 2)
+
+def compute_tower_hanoi_stack(k: int) -> List[List[int]]:
+
+    result, pending_ops = [], [(0, 1, 2, k)]
+
+    while pending_ops:
+
+        from_peg, to_peg, spare_peg, k = pending_ops.pop()
+
+        if k > 1:
+
+            pending_ops.append((spare_peg, to_peg, from_peg, k - 1))
+
+            pending_ops.append((from_peg, to_peg, spare_peg, 1))
+
+            pending_ops.append((from_peg, spare_peg, to_peg, k - 1))
+
+        else:
+
+            result.append((from_peg, to_peg))
+
+    return result
 
 
 @enable_executor_hook
@@ -18,7 +51,7 @@ def compute_tower_hanoi_wrapper(executor, num_rings):
     pegs = [list(reversed(range(1, num_rings + 1)))
             ] + [[] for _ in range(1, NUM_PEGS)]
 
-    result = executor.run(functools.partial(compute_tower_hanoi, num_rings))
+    result = executor.run(functools.partial(compute_tower_hanoi_stack, num_rings))
 
     for from_peg, to_peg in result:
         if pegs[to_peg] and pegs[from_peg][-1] >= pegs[to_peg][-1]:
