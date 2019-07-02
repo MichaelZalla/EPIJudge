@@ -12,10 +12,93 @@ WHITE, BLACK = range(2)
 Coordinate = collections.namedtuple('Coordinate', ('x', 'y'))
 
 
-def search_maze(maze: List[List[int]], s: Coordinate,
-                e: Coordinate) -> List[Coordinate]:
-    # TODO - you fill in here.
-    return []
+def get_path(M: List[List[int]], S: Coordinate,
+                E: Coordinate) -> List[Coordinate]:
+
+    def get_neighbors(coord):
+
+        # Return all valid adjacent coordinates to the input coordinate
+
+        x, y, n = coord.x, coord.y, []
+
+        # Check to the left
+        if x > 0 and M[x-1][y] == WHITE:
+            n.append(Coordinate(x-1, y))
+
+        # Check to the right
+        if x < len(M) - 1 and M[x+1][y] == WHITE:
+            n.append(Coordinate(x+1, y))
+
+        # Check above
+        if y > 0 and M[x][y-1] == WHITE:
+            n.append(Coordinate(x, y-1))
+
+        # Check below
+        if y < len(M[0]) - 1 and M[x][y+1] == WHITE:
+            n.append(Coordinate(x, y+1))
+
+        return n
+
+    # Start with S as our fronteir; mark S as visited so we don't revisit it
+
+    frontier, visited = collections.deque([S]), {}
+
+    visited[str(S)] = None
+
+    while frontier:
+
+        # Graph BFS means we need to visit least-recently-seen-first (i.e., stack)
+
+        coord = frontier.popleft()
+
+        # Did we reach the exit coordinate?
+
+        if coord.x == E.x and coord.y == E.y:
+
+            # Construct the path from S to E, using records in 'visited'
+
+            # Note that we use collections.deque to construct the path from
+            # back-to-front with O(1) additions to the front of the list;
+
+            path, prev = collections.deque([E]), visited[str(coord)]
+
+            while prev != S:
+
+                path.appendleft(prev)
+
+                prev = visited[str(prev)]
+
+            path.appendleft(S)
+
+            # Returns a complete path starting at S and ending at E
+
+            return path
+
+        # Otherwise, add this position's neighboring positions to our frontier
+
+        neighbors = [neighbor for neighbor in get_neighbors(coord) \
+            if str(neighbor) not in visited]
+
+        for n in neighbors:
+
+            visited[str(n)] = coord
+
+            frontier.append(n)
+
+    # At this point, we've exhausted our search without finding E
+
+    return None
+
+
+# M1 = [
+#     [ WHITE, WHITE, WHITE ],
+#     [ BLACK, WHITE, WHITE ],
+#     [ WHITE, WHITE, BLACK ],
+# ]
+
+# print(get_path(M1, Coordinate(0,0), Coordinate(0,2)))
+
+# exit()
 
 
 def path_element_is_feasible(maze, prev, cur):
@@ -34,7 +117,7 @@ def search_maze_wrapper(executor, maze, s, e):
     e = Coordinate(*e)
     cp = copy.deepcopy(maze)
 
-    path = executor.run(functools.partial(search_maze, cp, s, e))
+    path = executor.run(functools.partial(get_path, cp, s, e))
 
     if not path:
         return s == e
