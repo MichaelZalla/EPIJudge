@@ -4,10 +4,22 @@ from bst_node import BstNode
 from test_framework import generic_test
 
 
-def rebuild_bst_from_preorder(preorder_sequence: List[int]
-                              ) -> Optional[BstNode]:
-    # TODO - you fill in here.
-    return None
+def rebuild_bst_from_preorder(preorder_data: List[int]) -> Optional[BstNode]:
+
+    if not preorder_data:
+        return None
+
+    indices = (i for i, code in enumerate(preorder_data) if code > preorder_data[0])
+
+    default_value = len(preorder_data)
+
+    iterator = next(indices, default_value)
+
+    return BstNode(
+        preorder_data[0],
+        rebuild_bst_from_preorder(preorder_data[1:iterator]),
+        rebuild_bst_from_preorder(preorder_data[iterator:])
+    )
 
 
 if __name__ == '__main__':
