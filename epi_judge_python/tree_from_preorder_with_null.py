@@ -1,3 +1,5 @@
+from bst_node import BstNode
+
 import functools
 from typing import List
 
@@ -7,8 +9,24 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def reconstruct_preorder(preorder: List[int]) -> BinaryTreeNode:
-    # TODO - you fill in here.
-    return BinaryTreeNode()
+
+    def reconstruct_preorder_helper(preorder_iter):
+
+        root_key = next(preorder_iter)
+
+        if root_key is None:
+            return None
+
+        left_subtree = reconstruct_preorder_helper(preorder_iter)
+        right_subtree = reconstruct_preorder_helper(preorder_iter)
+
+        return BstNode(
+            root_key,
+            left_subtree,
+            right_subtree
+        )
+
+    return reconstruct_preorder_helper(iter(preorder))
 
 
 @enable_executor_hook
