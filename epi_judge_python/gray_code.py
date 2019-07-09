@@ -15,7 +15,7 @@ def gray_code(k: int) -> List[int]:
 
         return gray_code_int_helper(
             k - 1,
-            prev_code + [digit | (1 << k-1) for digit in prev_code[::-1]]
+            prev_code + [digit | (1 << k-1) for digit in reversed(prev_code)]
         )
 
     def gray_code_string_helper(k, prev_code = ['0','1']):
@@ -24,7 +24,7 @@ def gray_code(k: int) -> List[int]:
             return [int(code, 2) for code in prev_code]
 
         new_code = ['0' + token for token in prev_code]
-        new_code += ['1' + token for token in prev_code[::-1]]
+        new_code += ['1' + token for token in reversed(prev_code)]
 
         return gray_code_string_helper(k - 1, new_code)
 
@@ -38,6 +38,7 @@ def gray_code(k: int) -> List[int]:
 # print(["{0:b}".format(code).zfill(3) for code in gray_code(3)])
 # print(["{0:b}".format(code).zfill(4) for code in gray_code(4)])
 # print(["{0:b}".format(code).zfill(5) for code in gray_code(5)])
+# print(["{0:b}".format(code).zfill(10) for code in gray_code(10)])
 
 # exit()
 
