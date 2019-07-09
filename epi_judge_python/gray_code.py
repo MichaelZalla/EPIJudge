@@ -6,9 +6,40 @@ from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
 
-def gray_code(num_bits: int) -> List[int]:
-    # TODO - you fill in here.
-    return []
+def gray_code(k: int) -> List[int]:
+
+    def gray_code_int_helper(k, prev_code = [0,1]):
+
+        if k == 1:
+            return prev_code
+
+        return gray_code_int_helper(
+            k - 1,
+            prev_code + [digit | (1 << k-1) for digit in prev_code[::-1]]
+        )
+
+    def gray_code_string_helper(k, prev_code = ['0','1']):
+
+        if k == 1:
+            return [int(code, 2) for code in prev_code]
+
+        new_code = ['0' + token for token in prev_code]
+        new_code += ['1' + token for token in prev_code[::-1]]
+
+        return gray_code_string_helper(k - 1, new_code)
+
+    if k == 0:
+        return [0]
+
+    return gray_code_int_helper(k)
+
+# print(["{0:b}".format(code).zfill(1) for code in gray_code(1)])
+# print(["{0:b}".format(code).zfill(2) for code in gray_code(2)])
+# print(["{0:b}".format(code).zfill(3) for code in gray_code(3)])
+# print(["{0:b}".format(code).zfill(4) for code in gray_code(4)])
+# print(["{0:b}".format(code).zfill(5) for code in gray_code(5)])
+
+# exit()
 
 
 @enable_executor_hook
