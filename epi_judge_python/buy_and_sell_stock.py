@@ -10,7 +10,7 @@ def buy_and_sell_stock_once(prices: List[float]) -> float:
 
     buy_index, max_profit = 0, 0
 
-    for i in range(0, len(prices)):
+    for i in range(1, len(prices)):
 
         delta = prices[i] - prices[buy_index]
 
