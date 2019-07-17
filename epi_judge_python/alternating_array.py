@@ -6,9 +6,36 @@ from test_framework.test_failure import PropertyName, TestFailure
 from test_framework.test_utils import enable_executor_hook
 
 
-def rearrange(A: List[int]) -> None:
-    # TODO - you fill in here.
+def rearrange_naive(A: List[int]) -> None:
+
+    A.sort()
+
+    i = 1
+
+    while i < len(A) - 1:
+        A[i], A[i+1] = A[i+1], A[i]
+        i += 2
+
     return
+
+
+def rearrange(A):
+
+    for i in range(len(A)):
+        A[i:i+2] = sorted(A[i:i+2], reverse = i % 2)
+
+    return
+
+
+# print(rearrange([]))
+# print(rearrange([1]))
+# print(rearrange([1,2]))
+# print(rearrange([2,1]))
+# print(rearrange([1,2,3]))
+# print(rearrange([3,2,1]))
+# print(rearrange([0,1,2,3,4,5,6,7,8,9]))
+
+# exit()
 
 
 @enable_executor_hook
