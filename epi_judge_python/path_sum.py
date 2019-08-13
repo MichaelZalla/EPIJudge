@@ -2,9 +2,19 @@ from binary_tree_node import BinaryTreeNode
 from test_framework import generic_test
 
 
-def has_path_sum(tree: BinaryTreeNode, remaining_weight: int) -> bool:
-    # TODO - you fill in here.
-    return True
+def has_path_sum(node: BinaryTreeNode, remaining_weight: int) -> bool:
+
+    if not node:
+        return False
+
+    # if node.data > remaining_weight:
+    #     return False
+
+    if not node.left and not node.right and node.data == remaining_weight:
+        return True
+
+    return has_path_sum(node.left, remaining_weight - node.data) or \
+        has_path_sum(node.right, remaining_weight - node.data)
 
 
 if __name__ == '__main__':
