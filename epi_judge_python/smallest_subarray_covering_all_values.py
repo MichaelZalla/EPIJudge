@@ -8,11 +8,37 @@ from test_framework.test_utils import enable_executor_hook
 Subarray = collections.namedtuple('Subarray', ('start', 'end'))
 
 
-def find_smallest_sequentially_covering_subset(paragraph: List[str],
-                                               keywords: List[str]
-                                               ) -> Subarray:
-    # TODO - you fill in here.
-    return Subarray(0, 0)
+def find_smallest_sequentially_covering_subset(C: List[str], T: List[str]) -> Subarray:
+
+    min_distance, min_subarray = len(C), Subarray(start=0, end=len(C)-1)
+
+    indices = { token: [-1] * (len(C) - 1) + [len(C) - 1 if C[-1] == token else -1 ] for token in T }
+
+    for i in reversed(range(len(C) - 1)):
+        for token in T:
+            indices[token][i] = i if C[i] == token else indices[token][i+1]
+
+    for start in set(indices[T[0]]):
+
+        token_index, end = 1, start
+
+        while end != -1 and token_index < len(T):
+            token = T[token_index]
+            end = indices[token][end]
+            token_index += 1
+
+        if end != -1:
+            distance = end - start + 1
+            if distance < min_distance:
+                min_distance, min_subarray = distance, Subarray(start=start,end=end)
+
+    return min_subarray
+
+
+# print(find_smallest_sequentially_covering_subset(['A','B','C','A','B','A','A'], ['B','C','A']))
+# print(find_smallest_sequentially_covering_subset(['S','O','B'], ['S','O','B']))
+
+# exit()
 
 
 @enable_executor_hook
