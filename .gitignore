@@ -33,3 +33,6 @@ epi_judge_java/java_build/
 /epi_judge_java_solutions
 /epi_judge_cpp
 /epi_judge_cpp_solutions
+
+# Webpage tracker
+problem_mapping.js
